@@ -222,126 +222,120 @@ class A_C_N:
             
 #################################### Start Greedy Debug #################################################################
 
-# class A_C_G:
-#     def __init__(self, C="EAR"):
-#         """
-#          For each of the considered six problems, this is a polynomial time algorithm
-#          that, for a given tuple of attribute values, describes the work on this tuple 
-#          of a decision tree, which solves the problem. This algorithm is a completely 
-#          greedy algorithm by nature.
+class A_C_G:
+    def __init__(self, C="EAR"):
+        """
+         For each of the considered six problems, this is a polynomial time algorithm
+         that, for a given tuple of attribute values, describes the work on this tuple 
+         of a decision tree, which solves the problem. This algorithm is a completely 
+         greedy algorithm by nature.
          
-#          C - type of problem:
-#             "AR" - All Rules
-#             "EAR" - Extended All Rules
-#             "SR" - Some Rules
-#             "ESR" - Extended Some Rules
-#             "AD" - All Decisions
-#             "EAD" - Extended All Decisions
-#         """
-#         self.C = C
-#         self.depth = 0
-#         self.rules = None
-#         self.R_C = Reduction(C)
-#         self.attributes_order = []
-#         print("bbbbbbbbbb")
+         C - type of problem:
+            "AR" - All Rules
+            "EAR" - Extended All Rules
+            "SR" - Some Rules
+            "ESR" - Extended Some Rules
+            "AD" - All Decisions
+            "EAD" - Extended All Decisions
+        """
+        self.C = C
+        self.depth = 0
+        self.rules = None
+        self.R_C = Reduction(C)
+        self.attributes_order = []
         
-#     def solve(self, S, delta):
-#         print("aaaaaaaa")
-#         """
-#         S - System of Decision Rules (pandas DataFrame)
-#         delta - tuple of attribute values from the set V_C (a row of a pandas df, without any NaN values)
-#         """
+    def solve(self, S, delta):
+        """
+        S - System of Decision Rules (pandas DataFrame)
+        delta - tuple of attribute values from the set V_C (a row of a pandas df, without any NaN values)
+        """
         
-#         # AR - All Rules problem, EAR - Extended All Rules problem
-#         if self.C in ["AR", "EAR"]:
-#             Q = S.copy()
-#             while True:
-#                 # Step 1
-#                 P = self.R_C(Q)
-#                 if (P.empty or P.iloc[:, :-1].isna().all().all()):
-#                     if P.empty:
-# #                             print("There is no such rule")
-#                         return self.depth, self.rules
-#                     else:
-#                         row_indecies = P.index.tolist()
-#                         self.rules = S.loc[row_indecies]
-#                         return self.depth, self.rules
+        # AR - All Rules problem, EAR - Extended All Rules problem
+        if self.C in ["AR", "EAR"]:
+            Q = S.copy()
+            while True:
+                # Step 1
+                P = self.R_C(Q)
+                if (P.empty or P.iloc[:, :-1].isna().all().all()):
+                    if P.empty:
+#                             print("There is no such rule")
+                        return self.depth, self.rules
+                    else:
+                        row_indecies = P.index.tolist()
+                        self.rules = S.loc[row_indecies]
+                        return self.depth, self.rules
 
-#                 # Step 2
-#                 else:
-# #                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
-# #                         if P[column].notna().any():
-# #                             attr = column
-# #                             break
-#                     self.depth += 1
-#                     attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
-#                     alpha = (attr, delta[attr])
-#                     Q = SAlphaStep(P, alpha)
-#                     self.attributes_order.append(attr)
-#             print(self.attributes_order)
-#             print("kdjsdljskla")
+                # Step 2
+                else:
+#                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
+#                         if P[column].notna().any():
+#                             attr = column
+#                             break
+                    self.depth += 1
+                    attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
+                    alpha = (attr, delta[attr])
+                    Q = SAlphaStep(P, alpha)
+                    self.attributes_order.append(attr)
            
                 
             
-#         # SR - Some Rules problem, ESR - Extended Some Rules problem
-#         elif self.C in ["SR", "ESR"]:
-#             Q = S.copy()
-#             while True:
-#                 # Step 1
-#                 P = self.R_C(Q)
-#                 if (P.empty or P.iloc[:, :-1].isna().all().all()):
-#                     if P.empty:
-# #                             print("There is no such rule")
-#                         return self.depth, self.rules
-#                     else:
-#                         row_indecies = P.index.tolist()
-#                         self.rules = S.loc[row_indecies]
-#                         return self.depth, self.rules
+        # SR - Some Rules problem, ESR - Extended Some Rules problem
+        elif self.C in ["SR", "ESR"]:
+            Q = S.copy()
+            while True:
+                # Step 1
+                P = self.R_C(Q)
+                if (P.empty or P.iloc[:, :-1].isna().all().all()):
+                    if P.empty:
+#                             print("There is no such rule")
+                        return self.depth, self.rules
+                    else:
+                        row_indecies = P.index.tolist()
+                        self.rules = S.loc[row_indecies]
+                        return self.depth, self.rules
 
-#                 # Step 2
-#                 else:
-# #                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
-# #                         if P[column].notna().any():
-# #                             attr = column
-# #                             break
-#                     self.depth += 1
-#                     attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
-#                     alpha = (attr, delta[attr])
-#                     Q = SAlphaStep(P, alpha)
-#                     self.attributes_order.append(attr)
-#             print(self.attributes_order)
+                # Step 2
+                else:
+#                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
+#                         if P[column].notna().any():
+#                             attr = column
+#                             break
+                    self.depth += 1
+                    attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
+                    alpha = (attr, delta[attr])
+                    Q = SAlphaStep(P, alpha)
+                    self.attributes_order.append(attr)
                 
-#         # AD - All Decisions problem, EAD - Extended All Decisions problem
-#         elif self.C in ["AD", "EAD"]:
-#             Q = S.copy()
-#             while True:
-#                 # Step 1
-#                 P = self.R_C(Q)
-#                 if (P.empty or P.iloc[:, :-1].isna().all().all()):
-#                     if P.empty:
-# #                             print("There is no such rule")
-#                         return self.depth, self.rules
-#                     else:
-#                         row_indecies = P.index.tolist()
-#                         self.rules = S.loc[row_indecies]
-#                         return self.depth, self.rules
+        # AD - All Decisions problem, EAD - Extended All Decisions problem
+        elif self.C in ["AD", "EAD"]:
+            Q = S.copy()
+            while True:
+                # Step 1
+                P = self.R_C(Q)
+                if (P.empty or P.iloc[:, :-1].isna().all().all()):
+                    if P.empty:
+#                             print("There is no such rule")
+                        return self.depth, self.rules
+                    else:
+                        row_indecies = P.index.tolist()
+                        self.rules = S.loc[row_indecies]
+                        return self.depth, self.rules
 
-#                 # Step 2
-#                 else:
-# #                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
-# #                         if P[column].notna().any():
-# #                             attr = column
-# #                             break
-#                     self.depth += 1
-#                     attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
-#                     alpha = (attr, delta[attr])
-#                     Q = SAlphaStep(P, alpha)
-#                     self.attributes_order.append(attr)
-#             print(self.attributes_order)                
+                # Step 2
+                else:
+#                     for column in P.columns:       # We choose an attribute ai ∈ A(P) with the minimum index i
+#                         if P[column].notna().any():
+#                             attr = column
+#                             break
+                    self.depth += 1
+                    attr = P.iloc[:, :-1].count().idxmax() # Find the column name with the maximum number of non-NaN values
+                    alpha = (attr, delta[attr])
+                    Q = SAlphaStep(P, alpha)
+                    self.attributes_order.append(attr)
                 
-#         # Wrong problem type      
-#         else: 
-#             raise ValueError("C must be one of {'AR', 'EAR', 'SR', 'ESR', 'AD', 'EAD'}")
+        # Wrong problem type      
+        else: 
+            raise ValueError("C must be one of {'AR', 'EAR', 'SR', 'ESR', 'AD', 'EAD'}")
             
             
 #################################### End Greedy Debug #################################################################
