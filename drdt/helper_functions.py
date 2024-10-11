@@ -1,6 +1,8 @@
 import numpy as np 
 import pandas as pd
 from tqdm import tqdm
+import random
+import itertools
 
 
 def Reduction(problem):
@@ -273,4 +275,3 @@ def NGreedy(S_plus):
         uncovered_rows -= set(S_max.index[S_max[max_col].notna()])
 
     return B
-
