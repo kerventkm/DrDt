@@ -586,14 +586,14 @@ class DynamicProgrammingAlgorithms:
     def A_DP(self, S):
         
         if self.C in ["AR", "SR", "AD"]:
-            if self.C == "AR" and (not S.dropna().empty):
-                return len(S.columns) - 1
+#             if self.C == "AR" and (not S.dropna().empty):
+#                 return len(S.columns) - 1
             if self.C == "SR" and (S.iloc[:, :-1].isna().all(axis=1).any()):
                 return 0
             DAG = self.DAG_C(S)
         else:
-            if self.C == "EAR" and (not S.dropna().empty):
-                return len(S.columns) - 1
+#             if self.C == "EAR" and (not S.dropna().empty):
+#                 return len(S.columns) - 1
             if self.C == "ESR" and (S.iloc[:, :-1].isna().all(axis=1).any()):
                 return 0
             DAG = self.DAG_EC(S)
